@@ -7,31 +7,25 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.config.RobotMap;
 
+import java.util.concurrent.TimeUnit;
+
 public class LauncherSubsystem extends Subsystem
 {
     private static LauncherSubsystem _instance;
     WPI_TalonSRX leftMotor;
     WPI_TalonSRX rightMotor;
     WPI_TalonSRX launchGate;
-    //Tracks time since launch motors have been started
-    double timeSinceRev;
-    boolean motorStatus;
     private LauncherSubsystem()
     {
         leftMotor = new WPI_TalonSRX(RobotMap.LEFT_LAUNCHER_ID);
         rightMotor = new WPI_TalonSRX(RobotMap.RIGHT_LAUNCHER_ID);
         launchGate = new WPI_TalonSRX(RobotMap.LAUNCH_GATE_ID);
-        timeSinceRev = System.currentTimeMillis();
-        motorStatus = false;
     }
 
     //Sets speed of both motors to a float -1 to +1
-    public void launchAtPerOut(float speed)
-    {
-        leftMotor.set(ControlMode.PercentOutput, speed);
-        rightMotor.set(ControlMode.PercentOutput, speed);
-        timeSinceRev = System.currentTimeMillis();
-        motorStatus = true;
+    public void bothMotorsOn() {
+        leftMotor.set(ControlMode.PercentOutput, 1);
+        rightMotor.set(ControlMode.PercentOutput, 1);
     }
 
     //Sets both motors to speed of 0 (No motion)
@@ -39,20 +33,6 @@ public class LauncherSubsystem extends Subsystem
     {
         leftMotor.set(ControlMode.PercentOutput, 0);
         rightMotor.set(ControlMode.PercentOutput, 0);
-        timeSinceRev = 0;
-        motorStatus = false;
-    }
-
-    //Returns time in millis since motors have started
-    public double getTimeSinceRev()
-    {
-        return timeSinceRev;
-    }
-
-    //Returns true if motors are running
-    public boolean getMotorStatus()
-    {
-        return motorStatus;
     }
 
     public void openGate()
