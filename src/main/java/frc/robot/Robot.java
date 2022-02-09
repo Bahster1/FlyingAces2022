@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.CommandWithController;
+import frc.robot.commands.TestCommand;
 import frc.robot.subsystems.ControllerSubsystem;
 
 /**
@@ -31,6 +32,7 @@ public class Robot extends TimedRobot
      * initialization code.
      */
     private Command teleopCommand;
+    private TestCommand testCommand;
     @Override
     public void robotInit()
     {
@@ -39,6 +41,7 @@ public class Robot extends TimedRobot
         SmartDashboard.putData("Auto choices", chooser);
 
         teleopCommand = new CommandWithController();
+        testCommand = new TestCommand();
 
         ControllerSubsystem.getInstance();
     }
@@ -95,6 +98,8 @@ public class Robot extends TimedRobot
         {
             teleopCommand.start();
         }
+        //teleopCommand.start();
+        //testCommand.start();
     }
 
     /** This method is called periodically during operator control. */
@@ -114,9 +119,14 @@ public class Robot extends TimedRobot
 
     /** This function is called once when test mode is enabled. */
     @Override
-    public void testInit() {}
+    public void testInit() {
+        if(testCommand != null)
+        {
+            testCommand.start();
+        }
+    }
 
     /** This method is called periodically during test mode. */
     @Override
-    public void testPeriodic() {}
+    public void testPeriodic() {Scheduler.getInstance().run();}
 }
