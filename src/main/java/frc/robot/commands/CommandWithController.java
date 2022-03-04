@@ -3,17 +3,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.config.ControllerMap;
 import frc.robot.subsystems.ControllerSubsystem;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class CommandWithController extends Command
 {
     private ControllerSubsystem _controller;
-    private Drivetrain _drivetrain;
+    private DrivetrainSubsystem _drivetrain;
 
     public CommandWithController()
     {
         _controller = ControllerSubsystem.getInstance();
-        _drivetrain = Drivetrain.getInstance();
+        _drivetrain = DrivetrainSubsystem.getInstance();
     }
 
     @Override
@@ -21,11 +21,8 @@ public class CommandWithController extends Command
     {
         double driveSpeed = _controller.getJoystick().getRawAxis(ControllerMap.RIGHT_TRIGGER) - _controller.getJoystick().getRawAxis(ControllerMap.LEFT_TRIGGER);
         double driveTurn = _controller.getJoystick().getRawAxis(ControllerMap.LEFT_AXIS_X);
-        double launcher = _controller.getJoystick().getRawAxis(ControllerMap.LEFT_BUMPER);
-        //Handles arcade drive
+
         _drivetrain.arcadeDrive(driveSpeed, driveTurn);
-
-
     }
 
     @Override

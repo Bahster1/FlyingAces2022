@@ -4,7 +4,7 @@
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.config.ControllerMap;
 import frc.robot.subsystems.ControllerSubsystem;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.TestMotorSubsystem;
 
 public class TestCommand extends Command {
@@ -17,12 +17,12 @@ public class TestCommand extends Command {
     //Clock Cycle
     private int clockCycle = 0;
     //Robot Requires drivetrain system
-    private Drivetrain _drivetrain;
+    private DrivetrainSubsystem _drivetrain;
 
     public TestCommand() {
         _testMotor = TestMotorSubsystem.getInstance();
         _controller = ControllerSubsystem.getInstance();
-        _drivetrain = Drivetrain.getInstance();
+        _drivetrain = DrivetrainSubsystem.getInstance();
     }
 
     @Override
@@ -71,8 +71,8 @@ public class TestCommand extends Command {
 
 
     @Override
-    protected boolean isFinished() {
+    protected boolean isFinished()
+    {
         return false;
     }
 }
-

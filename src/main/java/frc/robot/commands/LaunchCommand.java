@@ -1,23 +1,47 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.config.RobotMap;
 import frc.robot.subsystems.LauncherSubsystem;
 
-import java.util.concurrent.TimeUnit;
-
-public class LaunchCommand extends Command {
+public class LaunchCommand extends Command
+{
     private LauncherSubsystem _launcher;
-    public LaunchCommand() throws InterruptedException {
-        _launcher.bothMotorsOn();
-        TimeUnit.MILLISECONDS.sleep(200);
-        _launcher.openGate();
-        TimeUnit.MILLISECONDS.sleep(1000);
-        _launcher.closeGate();
-        _launcher.bothMotorsOff();
+    private boolean _finished = false;
+    private final int SECONDS_TO_ENCODER_PULSES;
+
+    public LaunchCommand(int time)
+    {
+        _launcher = LauncherSubsystem.getInstance();
+        SECONDS_TO_ENCODER_PULSES = time * RobotMap.LAUNCHER_MOTOR_RPM * RobotMap.PULSES_PER_REVOLUTION;
+
+        requires(_launcher);
     }
 
     @Override
-    protected boolean isFinished() {
-        return false;
+    public void initialize()
+    {
+        _launcher.zeroLauncher();
+        _launcher.bothMotorsOn();
+        _launcher.openGate();
+    }
+
+    @Override
+    public void execute()
+    {
+        _finished = _launcher.getLauncherPosition() >= SECONDS_TO_ENCODER_PULSES;
+    }
+
+    @Override
+    protected boolean isFinished()
+    {
+        return _finished;
+    }
+
+    @Override
+    protected void end()
+    {
+        _launcher.closeGate();
+        _launcher.bothMotorsOff();
     }
 }

@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.config.RobotMap;
@@ -10,65 +8,44 @@ import frc.robot.config.RobotMap;
 public class LiftSubsystem extends Subsystem
 {
     private static LiftSubsystem _instance;
-    WPI_TalonSRX leftMotor;
-    WPI_TalonSRX rightMotor;
+
+    private final WPI_TalonSRX _leftMotor;
+    private final WPI_TalonSRX _rightMotor;
+
     private LiftSubsystem()
     {
-        leftMotor = new WPI_TalonSRX(RobotMap.LEFT_LIFT_ID);
-        rightMotor = new WPI_TalonSRX(RobotMap.RIGHT_LIFT_ID);
+        _leftMotor = new WPI_TalonSRX(RobotMap.LEFT_LIFT_ID);
+        _rightMotor = new WPI_TalonSRX(RobotMap.RIGHT_LIFT_ID);
     }
 
-    //Sets speed of both motors to a float -1 to +1
-    public void bothMotorsAtPerOut(float speed)
+    public void liftOn(int speed)
     {
-        leftMotor.set(ControlMode.PercentOutput, speed);
-        rightMotor.set(ControlMode.PercentOutput, speed);
+        _leftMotor.set(ControlMode.PercentOutput, speed);
+        _rightMotor.set(ControlMode.PercentOutput, speed);
     }
 
-    //Sets both motors to speed of 0 (No motion)
-    public void bothMotorsOff()
+    public void liftOff()
     {
-        leftMotor.set(ControlMode.PercentOutput, 0);
-        rightMotor.set(ControlMode.PercentOutput, 0);
+        _leftMotor.set(ControlMode.PercentOutput, 0);
+        _rightMotor.set(ControlMode.PercentOutput, 0);
     }
 
-    //Sets speed of left motor to a float -1 to +1
-    public void leftMotorAtPerOut(float speed)
+    public double getPosition()
     {
-        leftMotor.set(ControlMode.PercentOutput, speed);
+        return _leftMotor.getSelectedSensorPosition();
     }
-
-    //Sets left motor to speed of 0 (No motion)
-    public void leftMotorOff(float speed)
-    {
-        leftMotor.set(ControlMode.PercentOutput, 0);
-    }
-
-    //Sets speed of right motor to a float -1 to +1
-    public void rightMotorAtPerOut(float speed)
-    {
-        rightMotor.set(ControlMode.PercentOutput, speed);
-    }
-
-    //Sets right motors to speed of 0 (No motion)
-    public void rightMotorOff(float speed)
-    {
-        rightMotor.set(ControlMode.PercentOutput, 0);
-    }
-
 
     public static LiftSubsystem getInstance()
     {
         if (_instance == null)
-        {
             _instance = new LiftSubsystem();
-        }
 
         return _instance;
     }
 
     @Override
-    protected void initDefaultCommand() {
+    protected void initDefaultCommand()
+    {
 
     }
 }
